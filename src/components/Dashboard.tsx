@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { User } from "@supabase/supabase-js";
 import { Calendar, Trophy, Users, Play } from "lucide-react";
 
@@ -38,6 +38,7 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [liveStreams, setLiveStreams] = useState<LiveStream[]>([]);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchData();
