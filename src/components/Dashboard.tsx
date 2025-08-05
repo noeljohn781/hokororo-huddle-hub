@@ -6,7 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { User } from "@supabase/supabase-js";
-import { Calendar, Trophy, Users, Play } from "lucide-react";
+import { Calendar, Trophy, Users, Play, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Tournament {
   id: string;
@@ -39,6 +40,7 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
   const [liveStreams, setLiveStreams] = useState<LiveStream[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -135,7 +137,13 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
       {/* Header */}
       <header className="bg-white border-b shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-primary">⚽ E-Football Hub</h1>
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <h1 className="text-2xl font-bold text-primary">⚽ E-Football Hub</h1>
+          </div>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">Welcome, {user.email}</span>
             <Button variant="outline" onClick={onSignOut}>Sign Out</Button>
