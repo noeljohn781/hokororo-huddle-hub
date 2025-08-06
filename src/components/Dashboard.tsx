@@ -6,10 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { User } from "@supabase/supabase-js";
-import { Calendar, Trophy, Users, Play, ArrowLeft, Settings, CreditCard, UserPlus } from "lucide-react";
+import { Calendar, Trophy, Users, Play, ArrowLeft, Settings, CreditCard, UserPlus, MessageCircle, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import PaymentForm from "./PaymentForm";
 import InvitePartner from "./InvitePartner";
+import ChatBox from "./ChatBox";
+import CreateTournament from "./CreateTournament";
+import CreateLiveStream from "./CreateLiveStream";
 
 interface Tournament {
   id: string;
@@ -43,6 +46,9 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
   const [loading, setLoading] = useState(true);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showInviteForm, setShowInviteForm] = useState(false);
+  const [showCreateTournament, setShowCreateTournament] = useState(false);
+  const [showCreateStream, setShowCreateStream] = useState(false);
+  const [showChat, setShowChat] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -160,7 +166,7 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="flex gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
           <Button onClick={() => setShowPaymentForm(true)} className="flex items-center gap-2">
             <CreditCard className="w-4 h-4" />
             Make Payment
@@ -168,6 +174,18 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
           <Button onClick={() => setShowInviteForm(true)} variant="outline" className="flex items-center gap-2">
             <UserPlus className="w-4 h-4" />
             Invite Partner
+          </Button>
+          <Button onClick={() => setShowCreateTournament(true)} variant="outline" className="flex items-center gap-2">
+            <Plus className="w-4 h-4" />
+            Create Tournament
+          </Button>
+          <Button onClick={() => setShowCreateStream(true)} variant="outline" className="flex items-center gap-2">
+            <Play className="w-4 h-4" />
+            Create Stream
+          </Button>
+          <Button onClick={() => setShowChat(!showChat)} variant="outline" className="flex items-center gap-2">
+            <MessageCircle className="w-4 h-4" />
+            {showChat ? "Hide Chat" : "Show Chat"}
           </Button>
         </div>
 
@@ -180,6 +198,32 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
         {showInviteForm && (
           <div className="mb-6">
             <InvitePartner user={user} />
+          </div>
+        )}
+
+        {showCreateTournament && (
+          <div className="mb-6">
+            <CreateTournament 
+              user={user} 
+              onClose={() => setShowCreateTournament(false)}
+              onSuccess={fetchData}
+            />
+          </div>
+        )}
+
+        {showCreateStream && (
+          <div className="mb-6">
+            <CreateLiveStream 
+              user={user} 
+              onClose={() => setShowCreateStream(false)}
+              onSuccess={fetchData}
+            />
+          </div>
+        )}
+
+        {showChat && (
+          <div className="mb-6">
+            <ChatBox user={user} title="General Chat" />
           </div>
         )}
 
