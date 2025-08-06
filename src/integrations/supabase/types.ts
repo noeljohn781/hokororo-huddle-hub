@@ -14,6 +14,50 @@ export type Database = {
   }
   public: {
     Tables: {
+      invitations: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          invitation_code: string
+          invitee_email: string
+          inviter_id: string | null
+          status: string | null
+          tournament_id: string | null
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          invitation_code?: string
+          invitee_email: string
+          inviter_id?: string | null
+          status?: string | null
+          tournament_id?: string | null
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          invitation_code?: string
+          invitee_email?: string
+          inviter_id?: string | null
+          status?: string | null
+          tournament_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invitations_tournament_id_fkey"
+            columns: ["tournament_id"]
+            isOneToOne: false
+            referencedRelation: "tournaments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       live_streams: {
         Row: {
           ended_at: string | null
@@ -129,6 +173,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string | null
+          description: string | null
+          id: string
+          payment_method: string | null
+          status: string | null
+          stripe_payment_intent_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          id?: string
+          payment_method?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          id?: string
+          payment_method?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
       }
       profiles: {
         Row: {

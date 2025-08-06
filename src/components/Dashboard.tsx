@@ -6,8 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { User } from "@supabase/supabase-js";
-import { Calendar, Trophy, Users, Play, ArrowLeft, Settings } from "lucide-react";
+import { Calendar, Trophy, Users, Play, ArrowLeft, Settings, CreditCard, UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import PaymentForm from "./PaymentForm";
+import InvitePartner from "./InvitePartner";
 
 interface Tournament {
   id: string;
@@ -39,6 +41,8 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [liveStreams, setLiveStreams] = useState<LiveStream[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [showInviteForm, setShowInviteForm] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -156,6 +160,29 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
+        <div className="flex gap-4 mb-6">
+          <Button onClick={() => setShowPaymentForm(true)} className="flex items-center gap-2">
+            <CreditCard className="w-4 h-4" />
+            Make Payment
+          </Button>
+          <Button onClick={() => setShowInviteForm(true)} variant="outline" className="flex items-center gap-2">
+            <UserPlus className="w-4 h-4" />
+            Invite Partner
+          </Button>
+        </div>
+
+        {showPaymentForm && (
+          <div className="mb-6">
+            <PaymentForm user={user} onClose={() => setShowPaymentForm(false)} />
+          </div>
+        )}
+
+        {showInviteForm && (
+          <div className="mb-6">
+            <InvitePartner user={user} />
+          </div>
+        )}
+
         <Tabs defaultValue="tournaments" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="tournaments" className="flex items-center gap-2">
