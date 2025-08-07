@@ -12,9 +12,9 @@ import { useToast } from "@/hooks/use-toast";
 interface Message {
   id: string;
   message: string;
-  user_id: string;
+  sender_id: string;
+  recipient_id: string;
   created_at: string;
-  sender_email?: string;
 }
 
 interface PrivateChatProps {
@@ -71,8 +71,8 @@ const PrivateChat = ({ user, recipientId, recipientEmail, onClose }: PrivateChat
           id,
           message,
           sender_id,
-          created_at,
-          profiles!sender_id(username)
+          recipient_id,
+          created_at
         `)
         .or(`and(sender_id.eq.${user.id},recipient_id.eq.${recipientId}),and(sender_id.eq.${recipientId},recipient_id.eq.${user.id})`)
         .order("created_at", { ascending: true });
