@@ -66,7 +66,7 @@ const PrivateChat = ({ user, recipientId, recipientEmail, onClose }: PrivateChat
   const fetchMessages = async () => {
     try {
       const { data, error } = await supabase
-        .from("private_messages")
+        .from("private_messages" as any)
         .select(`
           id,
           message,
@@ -84,7 +84,7 @@ const PrivateChat = ({ user, recipientId, recipientEmail, onClose }: PrivateChat
           variant: "destructive",
         });
       } else {
-        setMessages(data || []);
+        setMessages((data as unknown as Message[]) || []);
       }
     } catch (error) {
       toast({
@@ -101,7 +101,7 @@ const PrivateChat = ({ user, recipientId, recipientEmail, onClose }: PrivateChat
 
     try {
       const { error } = await supabase
-        .from("private_messages")
+        .from("private_messages" as any)
         .insert({
           message: newMessage.trim(),
           sender_id: user.id,
