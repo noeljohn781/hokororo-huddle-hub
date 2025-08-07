@@ -143,9 +143,9 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white border-b shadow-sm">
+      <header className="bg-card border-b shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
@@ -167,25 +167,25 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
-          <Button onClick={() => setShowPaymentForm(true)} className="flex items-center gap-2">
+          <Button onClick={() => navigate('/make-payment')} className="flex items-center gap-2">
             <CreditCard className="w-4 h-4" />
             Make Payment
           </Button>
-          <Button onClick={() => setShowInviteForm(true)} variant="outline" className="flex items-center gap-2">
+          <Button onClick={() => navigate('/invite-partner')} variant="outline" className="flex items-center gap-2">
             <UserPlus className="w-4 h-4" />
             Invite Partner
           </Button>
-          <Button onClick={() => setShowCreateTournament(true)} variant="outline" className="flex items-center gap-2">
+          <Button onClick={() => navigate('/create-tournament')} variant="outline" className="flex items-center gap-2">
             <Plus className="w-4 h-4" />
             Create Tournament
           </Button>
-          <Button onClick={() => setShowCreateStream(true)} variant="outline" className="flex items-center gap-2">
+          <Button onClick={() => navigate('/start-stream')} variant="outline" className="flex items-center gap-2">
             <Play className="w-4 h-4" />
             Create Stream
           </Button>
-          <Button onClick={() => setShowChat(!showChat)} variant="outline" className="flex items-center gap-2">
+          <Button onClick={() => navigate('/messages')} variant="outline" className="flex items-center gap-2">
             <MessageCircle className="w-4 h-4" />
-            {showChat ? "Hide Chat" : "Show Chat"}
+            Messages
           </Button>
         </div>
 
@@ -275,7 +275,7 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
                     </div>
                     <Button 
                       className="w-full" 
-                      onClick={() => joinTournament(tournament.id)}
+                      onClick={() => navigate(`/join-tournament/${tournament.id}`)}
                       disabled={tournament.current_participants >= tournament.max_participants}
                     >
                       {tournament.current_participants >= tournament.max_participants ? "Full" : "Join Tournament"}

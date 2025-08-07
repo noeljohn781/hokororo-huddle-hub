@@ -1,26 +1,84 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy, Play, Users, Zap, Star, GamepadIcon, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Trophy, 
+  Users, 
+  MessageCircle, 
+  Play, 
+  Globe, 
+  Zap,
+  Target,
+  Crown
+} from "lucide-react";
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
+  const features = [
+    {
+      icon: Trophy,
+      title: "Competitive Tournaments",
+      description: "Join exciting tournaments with skilled players from around the world and compete for prizes."
+    },
+    {
+      icon: Play,
+      title: "Live Streaming",
+      description: "Watch live matches and streams, or broadcast your own gameplay to a global audience."
+    },
+    {
+      icon: Users,
+      title: "Global Community",
+      description: "Connect with e-football players worldwide, make friends, and build your network."
+    },
+    {
+      icon: Zap,
+      title: "Real-time Features",
+      description: "Experience instant chat, live updates, and real-time tournament brackets."
+    },
+    {
+      icon: Target,
+      title: "Skill-based Matching",
+      description: "Get matched with players of similar skill levels for fair and exciting competitions."
+    },
+    {
+      icon: MessageCircle,
+      title: "Interactive Chat",
+      description: "Chat with other players, discuss strategies, and build lasting friendships."
+    }
+  ];
+
+  const stats = [
+    { label: "Active Players", value: "10,000+" },
+    { label: "Tournaments Hosted", value: "500+" },
+    { label: "Prize Money Awarded", value: "$50,000+" }
+  ];
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/10 dark:from-background dark:via-muted/10 dark:to-accent/5">
       {/* Header */}
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <GamepadIcon className="w-8 h-8 text-primary" />
-            <h1 className="text-2xl font-bold text-primary">E-Football Hub</h1>
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Crown className="h-8 w-8 text-primary" />
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              E-Football Hub
+            </h1>
           </div>
-          <div className="flex items-center gap-4">
-            <Button variant="outline" onClick={() => navigate('/auth')}>
+          <div className="flex items-center space-x-4">
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate("/auth")}
+              className="text-foreground/80 hover:text-foreground"
+            >
               Sign In
             </Button>
-            <Button onClick={() => navigate('/auth')}>
+            <Button 
+              onClick={() => navigate("/auth")}
+              className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+            >
               Sign Up
             </Button>
           </div>
@@ -28,135 +86,93 @@ const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Welcome to E-Football Hub
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-              The ultimate destination for competitive e-football gaming. Join tournaments, 
-              stream your matches live, connect with players worldwide, and compete for amazing prizes.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" onClick={() => navigate('/auth')} className="text-lg px-8 py-4">
-                Join the Competition
-              </Button>
-              <Button size="lg" variant="outline" onClick={() => navigate('/auth')} className="text-lg px-8 py-4">
-                Watch Live Streams
-              </Button>
-            </div>
-          </div>
+      <section className="container py-24 text-center">
+        <Badge 
+          variant="secondary" 
+          className="mb-6 bg-primary/10 text-primary border-primary/20"
+        >
+          Welcome to the Future of E-Football
+        </Badge>
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
+          Your Gateway to Competitive Digital Football
+        </h1>
+        <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+          E-Football Hub is your gateway to competitive digital football. Watch live games, 
+          join tournaments, and connect with players across the globe. Are you ready to make your mark?
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button 
+            size="lg" 
+            onClick={() => navigate("/auth")}
+            className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-lg px-8 py-3"
+          >
+            Join Competitions
+          </Button>
+          <Button 
+            size="lg" 
+            variant="outline" 
+            onClick={() => navigate("/auth")}
+            className="border-primary/30 text-primary hover:bg-primary/10 text-lg px-8 py-3"
+          >
+            Watch Live Streams
+          </Button>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 bg-muted/20">
-        <div className="container mx-auto">
-          <h3 className="text-3xl font-bold text-center mb-12">Why Choose E-Football Hub?</h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Trophy className="w-12 h-12 text-success mb-4" />
-                <CardTitle>Competitive Tournaments</CardTitle>
-                <CardDescription>
-                  Join exciting tournaments with real prize pools and compete against the best players
-                </CardDescription>
-              </CardHeader>
+      <section className="container py-24">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose E-Football Hub?</h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Experience the ultimate e-football platform with cutting-edge features designed for serious players.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <Card key={index} className="border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
+              <CardContent className="p-6">
+                <feature.icon className="h-12 w-12 text-primary mb-4" />
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+              </CardContent>
             </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Play className="w-12 h-12 text-secondary mb-4" />
-                <CardTitle>Live Streaming</CardTitle>
-                <CardDescription>
-                  Stream your matches live and watch other players in real-time with interactive features
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Users className="w-12 h-12 text-primary mb-4" />
-                <CardTitle>Global Community</CardTitle>
-                <CardDescription>
-                  Connect with players worldwide, find partners, and build lasting gaming relationships
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Zap className="w-12 h-12 text-accent mb-4" />
-                <CardTitle>Real-time Features</CardTitle>
-                <CardDescription>
-                  Experience lag-free gaming with our optimized platform and real-time chat system
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Star className="w-12 h-12 text-success mb-4" />
-                <CardTitle>Skill-based Matching</CardTitle>
-                <CardDescription>
-                  Get matched with players of similar skill levels for fair and competitive gameplay
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <MessageCircle className="w-12 h-12 text-secondary mb-4" />
-                <CardTitle>Interactive Chat</CardTitle>
-                <CardDescription>
-                  Chat with other players, share strategies, and build your gaming network
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <h4 className="text-4xl font-bold text-primary mb-2">10K+</h4>
-              <p className="text-muted-foreground">Active Players</p>
+      <section className="container py-16">
+        <div className="grid md:grid-cols-3 gap-8 text-center">
+          {stats.map((stat, index) => (
+            <div key={index} className="space-y-2">
+              <div className="text-4xl font-bold text-primary">{stat.value}</div>
+              <div className="text-muted-foreground">{stat.label}</div>
             </div>
-            <div>
-              <h4 className="text-4xl font-bold text-success mb-2">500+</h4>
-              <p className="text-muted-foreground">Tournaments Hosted</p>
-            </div>
-            <div>
-              <h4 className="text-4xl font-bold text-secondary mb-2">$50K+</h4>
-              <p className="text-muted-foreground">Prize Money Awarded</p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-primary/10 to-accent/10">
-        <div className="container mx-auto text-center">
-          <h3 className="text-3xl font-bold mb-6">Ready to Start Your E-Football Journey?</h3>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join thousands of players already competing in our tournaments and streaming their matches.
+      <section className="container py-24 text-center">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Start Your E-Football Journey?</h2>
+          <p className="text-xl text-muted-foreground mb-8">
+            Join thousands of players competing in tournaments, streaming matches, and building the future of digital football.
           </p>
-          <Button size="lg" onClick={() => navigate('/auth')} className="text-lg px-8 py-4">
+          <Button 
+            size="lg" 
+            onClick={() => navigate("/auth")}
+            className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-lg px-12 py-4"
+          >
             Get Started Now
           </Button>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-muted/20 py-8 px-4">
-        <div className="container mx-auto text-center">
-          <p className="text-muted-foreground">
-            © 2024 E-Football Hub. All rights reserved.
-          </p>
+      <footer className="border-t border-border/40 py-8">
+        <div className="container text-center text-muted-foreground">
+          <p>&copy; 2024 E-Football Hub. All rights reserved.</p>
         </div>
       </footer>
     </div>
