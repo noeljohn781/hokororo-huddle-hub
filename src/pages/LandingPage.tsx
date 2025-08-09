@@ -13,6 +13,8 @@ import {
   Target,
   Crown
 } from "lucide-react";
+import heroBackground from "@/assets/hero-background.jpg";
+import featuresBackground from "@/assets/features-background.jpg";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -57,7 +59,13 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/10 dark:from-background dark:via-muted/10 dark:to-accent/5">
+    <div className="min-h-screen bg-black relative">
+      {/* Background Images */}
+      <div 
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+        style={{ backgroundImage: `url(${heroBackground})` }}
+      />
+      <div className="relative z-10">{/* Content wrapper */}
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
@@ -86,7 +94,17 @@ const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="container py-24 text-center">
+      <section 
+        className="container py-24 text-center relative"
+        style={{ 
+          backgroundImage: `url(${featuresBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <div className="absolute inset-0 bg-black/70"></div>
+        <div className="relative z-10">
         <Badge 
           variant="secondary" 
           className="mb-6 bg-primary/10 text-primary border-primary/20"
@@ -117,10 +135,20 @@ const LandingPage = () => {
             Watch Live Streams
           </Button>
         </div>
+        </div>
       </section>
 
       {/* Features Section */}
-      <section className="container py-24">
+      <section className="container py-24 relative">
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{ 
+            backgroundImage: `url(${featuresBackground})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+        ></div>
+        <div className="relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose E-Football Hub?</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -137,6 +165,7 @@ const LandingPage = () => {
               </CardContent>
             </Card>
           ))}
+        </div>
         </div>
       </section>
 
@@ -175,6 +204,7 @@ const LandingPage = () => {
           <p>&copy; 2024 E-Football Hub. All rights reserved.</p>
         </div>
       </footer>
+      </div>
     </div>
   );
 };
