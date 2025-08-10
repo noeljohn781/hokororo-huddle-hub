@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar, Users, Trophy, DollarSign, ArrowLeft } from "lucide-react";
+import MobileMoneyPayment from "@/components/MobileMoneyPayment";
 
 interface Tournament {
   id: string;
@@ -35,6 +36,7 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
   const [loading, setLoading] = useState(true);
   const [joining, setJoining] = useState(false);
   const [alreadyJoined, setAlreadyJoined] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -91,71 +93,23 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
     }
   };
 
-  const handleJoinTournament = async () => {
-    if (!tournament || alreadyJoined) return;
+  const handleJoinTournament = () => {
+    setShowPayment(true);
+  };
 
-    setJoining(true);
+  const handlePaymentSuccess = () => {
+    setAlreadyJoined(true);
+    setShowPayment(false);
+    setTournament(prev => prev ? { ...prev, current_participants: prev.current_participants + 1 } : null);
+    
+    toast({
+      title: "Welcome to the Tournament! 🎉",
+      description: "You have successfully joined the tournament. Good luck!",
+    });
+  };
 
-    try {
-      // Create payment record
-      const { data: paymentData, error: paymentError } = await supabase
-        .from("payments")
-        .insert({
-          user_id: user.id,
-          amount: tournament.entry_fee,
-          currency: "USD",
-          description: `Entry fee for tournament: ${tournament.title}`,
-          status: "completed",
-          payment_method: "card"
-        })
-        .select()
-        .single();
-
-      if (paymentError) {
-        throw paymentError;
-      }
-
-      // Join tournament
-      const { error: participantError } = await supabase
-        .from("tournament_participants")
-        .insert({
-          tournament_id: tournament.id,
-          user_id: user.id,
-          payment_status: "completed"
-        });
-
-      if (participantError) {
-        throw participantError;
-      }
-
-      // Update tournament participant count
-      const { error: updateError } = await supabase
-        .from("tournaments")
-        .update({
-          current_participants: tournament.current_participants + 1
-        })
-        .eq("id", tournament.id);
-
-      if (updateError) {
-        throw updateError;
-      }
-
-      toast({
-        title: "Success!",
-        description: "You have successfully joined the tournament!",
-      });
-
-      setAlreadyJoined(true);
-      setTournament(prev => prev ? { ...prev, current_participants: prev.current_participants + 1 } : null);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to join tournament. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setJoining(false);
-    }
+  const handlePaymentCancel = () => {
+    setShowPayment(false);
   };
 
   if (loading) {
@@ -182,8 +136,25 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
   const isTournamentFull = tournament.current_participants >= tournament.max_participants;
   const canJoin = !alreadyJoined && !isTournamentFull && tournament.status === "upcoming";
 
+  if (showPayment && tournament) {
+    return (
+      <div className="min-h-screen bg-black p-6">
+        <div className="max-w-4xl mx-auto">
+          <MobileMoneyPayment
+            user={user}
+            tournamentId={tournament.id}
+            amount={tournament.entry_fee}
+            tournamentTitle={tournament.title}
+            onSuccess={handlePaymentSuccess}
+            onCancel={handlePaymentCancel}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-black p-6">
       <div className="max-w-4xl mx-auto">
         <Button
           variant="ghost"
@@ -218,7 +189,7 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
                   <DollarSign className="w-5 h-5 text-primary" />
                   <div>
                     <p className="text-sm text-muted-foreground">Entry Fee</p>
-                    <p className="text-lg font-semibold">${tournament.entry_fee}</p>
+                    <p className="text-lg font-semibold">Tsh {Math.round(tournament.entry_fee * 2500).toLocaleString()}</p>
                   </div>
                 </div>
 
@@ -226,7 +197,7 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
                   <Trophy className="w-5 h-5 text-primary" />
                   <div>
                     <p className="text-sm text-muted-foreground">Prize Pool</p>
-                    <p className="text-lg font-semibold">${tournament.prize_pool}</p>
+                    <p className="text-lg font-semibold">Tsh {Math.round(tournament.prize_pool * 2500).toLocaleString()}</p>
                   </div>
                 </div>
 
@@ -289,7 +260,7 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
                 <div className="space-y-4">
                   <h3 className="text-xl font-semibold">Ready to Join?</h3>
                   <p className="text-muted-foreground">
-                    Entry fee: <span className="font-semibold">${tournament.entry_fee}</span>
+                    Entry fee: <span className="font-semibold">Tsh {Math.round(tournament.entry_fee * 2500).toLocaleString()}</span>
                   </p>
                   <Button
                     size="lg"
@@ -297,7 +268,7 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
                     disabled={joining || !canJoin}
                     className="px-8"
                   >
-                    {joining ? "Processing..." : `Join Tournament - $${tournament.entry_fee}`}
+                    {joining ? "Processing..." : `Join Tournament - Tsh ${Math.round(tournament.entry_fee * 2500).toLocaleString()}`}
                   </Button>
                 </div>
               )}
