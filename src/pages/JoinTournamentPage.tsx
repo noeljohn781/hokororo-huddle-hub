@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar, Users, Trophy, DollarSign, ArrowLeft } from "lucide-react";
 import MobileMoneyPayment from "@/components/MobileMoneyPayment";
+import MobileLayout from "@/components/MobileLayout";
 
 interface Tournament {
   id: string;
@@ -114,22 +115,26 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
+      <MobileLayout user={user} title="Loading..." showBackButton onBack={() => navigate("/")}>
+        <div className="flex items-center justify-center h-full min-h-[50vh]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </MobileLayout>
     );
   }
 
   if (!tournament) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-foreground">Tournament not found</h2>
-          <Button onClick={() => navigate("/")} className="mt-4">
-            Return to Dashboard
-          </Button>
+      <MobileLayout user={user} title="Tournament Not Found" showBackButton onBack={() => navigate("/")}>
+        <div className="flex items-center justify-center h-full min-h-[50vh]">
+          <div className="text-center">
+            <h2 className="text-xl font-bold text-foreground">Tournament not found</h2>
+            <Button onClick={() => navigate("/")} className="mt-4">
+              Return to Dashboard
+            </Button>
+          </div>
         </div>
-      </div>
+      </MobileLayout>
     );
   }
 
@@ -138,8 +143,8 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
 
   if (showPayment && tournament) {
     return (
-      <div className="min-h-screen bg-black p-6">
-        <div className="max-w-4xl mx-auto">
+      <MobileLayout user={user} title="Payment" showBackButton onBack={handlePaymentCancel}>
+        <div className="p-4">
           <MobileMoneyPayment
             user={user}
             tournamentId={tournament.id}
@@ -149,26 +154,17 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
             onCancel={handlePaymentCancel}
           />
         </div>
-      </div>
+      </MobileLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black p-6">
-      <div className="max-w-4xl mx-auto">
-        <Button
-          variant="ghost"
-          onClick={() => navigate("/")}
-          className="mb-6"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Dashboard
-        </Button>
+    <MobileLayout user={user} title={tournament.title} showBackButton onBack={() => navigate("/")}>
+      <div className="p-4 space-y-6">
 
-        <Card>
-          <CardHeader>
+        <Card className="border-2">
+          <CardHeader className="pb-4">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-3xl">{tournament.title}</CardTitle>
               <Badge 
                 variant={tournament.status === "upcoming" ? "secondary" : "outline"}
                 className="text-sm"
@@ -177,96 +173,76 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
               </Badge>
             </div>
             {tournament.description && (
-              <p className="text-muted-foreground text-lg">{tournament.description}</p>
+              <p className="text-muted-foreground text-base">{tournament.description}</p>
             )}
           </CardHeader>
 
-          <CardContent className="space-y-6">
-            {/* Tournament Details */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <DollarSign className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">Entry Fee</p>
-                    <p className="text-lg font-semibold">Tsh {Math.round(tournament.entry_fee * 2500).toLocaleString()}</p>
-                  </div>
+          <CardContent className="space-y-4">
+            {/* Tournament Details - Mobile Optimized */}
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-3 bg-muted/20 rounded-lg">
+                  <DollarSign className="w-6 h-6 text-primary mx-auto mb-1" />
+                  <p className="text-xs text-muted-foreground">Entry Fee</p>
+                  <p className="text-sm font-bold">Tsh {Math.round(tournament.entry_fee * 2500).toLocaleString()}</p>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <Trophy className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">Prize Pool</p>
-                    <p className="text-lg font-semibold">Tsh {Math.round(tournament.prize_pool * 2500).toLocaleString()}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <Users className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">Participants</p>
-                    <p className="text-lg font-semibold">
-                      {tournament.current_participants} / {tournament.max_participants}
-                    </p>
-                  </div>
+                <div className="text-center p-3 bg-muted/20 rounded-lg">
+                  <Trophy className="w-6 h-6 text-primary mx-auto mb-1" />
+                  <p className="text-xs text-muted-foreground">Prize Pool</p>
+                  <p className="text-sm font-bold">Tsh {Math.round(tournament.prize_pool * 2500).toLocaleString()}</p>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">Start Date</p>
-                    <p className="text-lg font-semibold">
-                      {new Date(tournament.start_date).toLocaleDateString()}
-                    </p>
-                  </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center p-3 bg-muted/20 rounded-lg">
+                  <Users className="w-6 h-6 text-primary mx-auto mb-1" />
+                  <p className="text-xs text-muted-foreground">Participants</p>
+                  <p className="text-sm font-bold">
+                    {tournament.current_participants} / {tournament.max_participants}
+                  </p>
                 </div>
 
-                {tournament.end_date && (
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-primary" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">End Date</p>
-                      <p className="text-lg font-semibold">
-                        {new Date(tournament.end_date).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
-                )}
+                <div className="text-center p-3 bg-muted/20 rounded-lg">
+                  <Calendar className="w-6 h-6 text-primary mx-auto mb-1" />
+                  <p className="text-xs text-muted-foreground">Start Date</p>
+                  <p className="text-sm font-bold">
+                    {new Date(tournament.start_date).toLocaleDateString()}
+                  </p>
+                </div>
               </div>
             </div>
 
             <Separator />
 
-            {/* Join Tournament Section */}
-            <div className="text-center space-y-4">
+            {/* Join Tournament Section - Mobile Optimized */}
+            <div className="space-y-4">
               {alreadyJoined ? (
-                <div className="p-4 bg-success/10 border border-success/20 rounded-lg">
-                  <h3 className="text-lg font-semibold text-success">Already Joined!</h3>
-                  <p className="text-muted-foreground">You are registered for this tournament.</p>
+                <div className="p-4 bg-success/10 border border-success/20 rounded-lg text-center">
+                  <h3 className="text-base font-semibold text-success">Already Joined! ✅</h3>
+                  <p className="text-sm text-muted-foreground">You are registered for this tournament.</p>
                 </div>
               ) : isTournamentFull ? (
-                <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
-                  <h3 className="text-lg font-semibold text-destructive">Tournament Full</h3>
-                  <p className="text-muted-foreground">This tournament has reached maximum capacity.</p>
+                <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg text-center">
+                  <h3 className="text-base font-semibold text-destructive">Tournament Full</h3>
+                  <p className="text-sm text-muted-foreground">This tournament has reached maximum capacity.</p>
                 </div>
               ) : tournament.status !== "upcoming" ? (
-                <div className="p-4 bg-muted border rounded-lg">
-                  <h3 className="text-lg font-semibold">Tournament Not Available</h3>
-                  <p className="text-muted-foreground">This tournament is no longer accepting participants.</p>
+                <div className="p-4 bg-muted border rounded-lg text-center">
+                  <h3 className="text-base font-semibold">Tournament Not Available</h3>
+                  <p className="text-sm text-muted-foreground">This tournament is no longer accepting participants.</p>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold">Ready to Join?</h3>
+                <div className="space-y-4 text-center">
+                  <h3 className="text-lg font-semibold">Ready to Join? ⚽</h3>
                   <p className="text-muted-foreground">
-                    Entry fee: <span className="font-semibold">Tsh {Math.round(tournament.entry_fee * 2500).toLocaleString()}</span>
+                    Entry fee: <span className="font-semibold text-primary">Tsh {Math.round(tournament.entry_fee * 2500).toLocaleString()}</span>
                   </p>
                   <Button
                     size="lg"
                     onClick={handleJoinTournament}
                     disabled={joining || !canJoin}
-                    className="px-8"
+                    className="w-full h-12 mobile-transition"
                   >
                     {joining ? "Processing..." : `Join Tournament - Tsh ${Math.round(tournament.entry_fee * 2500).toLocaleString()}`}
                   </Button>
@@ -276,7 +252,7 @@ const JoinTournamentPage = ({ user }: JoinTournamentPageProps) => {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </MobileLayout>
   );
 };
 

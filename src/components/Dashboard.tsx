@@ -13,6 +13,7 @@ import InvitePartner from "./InvitePartner";
 import ChatBox from "./ChatBox";
 import CreateTournament from "./CreateTournament";
 import CreateLiveStream from "./CreateLiveStream";
+import MobileLayout from "./MobileLayout";
 
 interface Tournament {
   id: string;
@@ -133,59 +134,38 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">Loading...</p>
+      <MobileLayout user={user} showBottomNav={false}>
+        <div className="flex items-center justify-center h-full min-h-[50vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-4 text-muted-foreground">Loading...</p>
+          </div>
         </div>
-      </div>
+      </MobileLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-card border-b shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
-            </Button>
-            <h1 className="text-2xl font-bold text-primary">⚽ E-Football Hub</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">Welcome, {user.email}</span>
-            <Button variant="outline" onClick={() => navigate('/users')}>
-              <Settings className="w-4 h-4 mr-2" />
-              User Management
-            </Button>
-            <Button variant="outline" onClick={onSignOut}>Sign Out</Button>
-          </div>
-        </div>
-      </header>
-
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
-          <Button onClick={() => navigate('/make-payment')} className="flex items-center gap-2">
-            <CreditCard className="w-4 h-4" />
-            Make Payment
+    <MobileLayout user={user} title="E-Football Hub">
+      <div className="px-4 py-6 space-y-6">
+        {/* Quick Actions - Mobile Grid */}
+        <div className="grid grid-cols-2 gap-3">
+          <Button 
+            onClick={() => navigate('/make-payment')} 
+            className="flex flex-col items-center gap-2 h-20 mobile-transition"
+            size="lg"
+          >
+            <CreditCard className="w-6 h-6" />
+            <span className="text-sm">Make Payment</span>
           </Button>
-          <Button onClick={() => navigate('/invite-partner')} variant="outline" className="flex items-center gap-2">
-            <UserPlus className="w-4 h-4" />
-            Invite Partner
-          </Button>
-          <Button onClick={() => navigate('/create-tournament')} variant="outline" className="flex items-center gap-2">
-            <Plus className="w-4 h-4" />
-            Create Tournament
-          </Button>
-          <Button onClick={() => navigate('/start-stream')} variant="outline" className="flex items-center gap-2">
-            <Play className="w-4 h-4" />
-            Create Stream
-          </Button>
-          <Button onClick={() => navigate('/messages')} variant="outline" className="flex items-center gap-2">
-            <MessageCircle className="w-4 h-4" />
-            Messages
+          <Button 
+            onClick={() => navigate('/invite-partner')} 
+            variant="outline" 
+            className="flex flex-col items-center gap-2 h-20 mobile-transition"
+            size="lg"
+          >
+            <UserPlus className="w-6 h-6" />
+            <span className="text-sm">Invite Partner</span>
           </Button>
         </div>
 
@@ -328,7 +308,7 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </MobileLayout>
   );
 };
 

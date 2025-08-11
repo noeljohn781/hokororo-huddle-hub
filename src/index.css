@@ -111,8 +111,40 @@ All colors MUST be HSL.
     @apply dark;
   }
   
-  /* Ensure black background with green accents */
+  /* Mobile-first responsive design */
   body {
     background: black;
+    font-family: system-ui, -apple-system, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  /* Mobile-optimized scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Better mobile touch targets */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent zoom on inputs on iOS */
+  input, select, textarea {
+    font-size: 16px;
+  }
+
+  /* Custom mobile scroll behavior */
+  .mobile-scroll {
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
+  }
+
+  /* Mobile-specific animations */
+  @media (prefers-reduced-motion: no-preference) {
+    .mobile-transition {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
   }
 }
