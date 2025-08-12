@@ -2,13 +2,9 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Home, Trophy, MessageCircle, Plus, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { User as SupabaseUser } from "@supabase/supabase-js";
+// Removed TypeScript interfaces for JavaScript
 
-interface MobileBottomNavProps {
-  user?: SupabaseUser | null;
-}
-
-const MobileBottomNav = ({ user }: MobileBottomNavProps) => {
+const MobileBottomNav = ({ user }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -46,7 +42,7 @@ const MobileBottomNav = ({ user }: MobileBottomNavProps) => {
     },
   ];
 
-  const handleNavigation = (path: string, requiresAuth: boolean) => {
+  const handleNavigation = (path, requiresAuth) => {
     if (requiresAuth && !user) {
       navigate("/auth");
       return;
@@ -69,7 +65,7 @@ const MobileBottomNav = ({ user }: MobileBottomNavProps) => {
     navigate(path);
   };
 
-  const isActive = (path: string) => {
+  const isActive = (path) => {
     if (path === "/" && (location.pathname === "/" || location.pathname === "/landing")) {
       return true;
     }

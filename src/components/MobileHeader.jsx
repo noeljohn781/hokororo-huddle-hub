@@ -3,16 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Bell, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@supabase/supabase-js";
+// Removed TypeScript interfaces for JavaScript
 
-interface MobileHeaderProps {
-  user?: User | null;
-  title?: string;
-  showBackButton?: boolean;
-  onBack?: () => void;
-}
-
-const MobileHeader = ({ user, title, showBackButton, onBack }: MobileHeaderProps) => {
+const MobileHeader = ({ user, title, showBackButton, onBack }) => {
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -23,7 +16,7 @@ const MobileHeader = ({ user, title, showBackButton, onBack }: MobileHeaderProps
     }
   };
 
-  const getUserInitials = (email?: string) => {
+  const getUserInitials = (email) => {
     if (!email) return "U";
     return email.substring(0, 2).toUpperCase();
   };

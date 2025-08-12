@@ -1,17 +1,8 @@
-import React, { ReactNode } from "react";
-import { User } from "@supabase/supabase-js";
+import React from "react";
 import MobileBottomNav from "./MobileBottomNav";
 import MobileHeader from "./MobileHeader";
 
-interface MobileLayoutProps {
-  children: ReactNode;
-  user?: User | null;
-  showHeader?: boolean;
-  showBottomNav?: boolean;
-  title?: string;
-  showBackButton?: boolean;
-  onBack?: () => void;
-}
+// Removed TypeScript interfaces for JavaScript
 
 const MobileLayout = ({ 
   children, 
@@ -21,7 +12,7 @@ const MobileLayout = ({
   title,
   showBackButton = false,
   onBack
-}: MobileLayoutProps) => {
+}) => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {showHeader && (

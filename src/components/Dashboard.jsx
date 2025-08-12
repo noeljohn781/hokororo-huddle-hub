@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { User } from "@supabase/supabase-js";
 import { Calendar, Trophy, Users, Play, ArrowLeft, Settings, CreditCard, UserPlus, MessageCircle, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import PaymentForm from "./PaymentForm";
@@ -15,35 +14,11 @@ import CreateTournament from "./CreateTournament";
 import CreateLiveStream from "./CreateLiveStream";
 import MobileLayout from "./MobileLayout";
 
-interface Tournament {
-  id: string;
-  title: string;
-  description: string;
-  start_date: string;
-  prize_pool: number;
-  current_participants: number;
-  max_participants: number;
-  status: string;
-  entry_fee: number;
-}
+// Removed TypeScript interfaces for JavaScript
 
-interface LiveStream {
-  id: string;
-  stream_title: string;
-  stream_url: string;
-  viewer_count: number;
-  is_active: boolean;
-  started_at: string;
-}
-
-interface DashboardProps {
-  user: User;
-  onSignOut: () => void;
-}
-
-const Dashboard = ({ user, onSignOut }: DashboardProps) => {
-  const [tournaments, setTournaments] = useState<Tournament[]>([]);
-  const [liveStreams, setLiveStreams] = useState<LiveStream[]>([]);
+const Dashboard = ({ user, onSignOut }) => {
+  const [tournaments, setTournaments] = useState([]);
+  const [liveStreams, setLiveStreams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showInviteForm, setShowInviteForm] = useState(false);
@@ -76,7 +51,7 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
     setLoading(false);
   };
 
-  const joinTournament = async (tournamentId: string) => {
+  const joinTournament = async (tournamentId) => {
     try {
       const { error } = await supabase
         .from("tournament_participants")
@@ -104,7 +79,7 @@ const Dashboard = ({ user, onSignOut }: DashboardProps) => {
     }
   };
 
-  const joinStream = async (streamId: string) => {
+  const joinStream = async (streamId) => {
     try {
       const { error } = await supabase
         .from("stream_viewers")

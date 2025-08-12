@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { User, Session } from "@supabase/supabase-js";
+// Removed TypeScript imports for JavaScript
 import { supabase } from "@/integrations/supabase/client";
 import AuthPage from "@/components/AuthPage";
 import Dashboard from "@/components/Dashboard";
 import LandingPage from "./LandingPage";
 
 const Index = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState(null);
+  const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

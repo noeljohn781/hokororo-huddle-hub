@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import AuthPage from "./AuthPage";
 
-interface AuthenticatedRouteProps {
-  children: (user: User) => React.ReactNode;
-}
+// Removed TypeScript interfaces for JavaScript
 
-const AuthenticatedRoute = ({ children }: AuthenticatedRouteProps) => {
-  const [user, setUser] = useState<User | null>(null);
+const AuthenticatedRoute = ({ children }) => {
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
